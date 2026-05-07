@@ -1,0 +1,773 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.page{background:#F7F8FA;padding:20px 16px 32px;font-family:var(--font-sans)}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.logo{font-size:18px;font-weight:500;color:var(--color-text-primary);display:flex;align-items:center;gap:8px}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:#378ADD}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.tb-btn{font-size:13px;color:var(--color-text-secondary);padding:6px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:#fff;cursor:pointer}
+.hero{background:#fff;border-radius:16px;border:0.5px solid var(--color-border-tertiary);padding:28px 24px 24px;margin-bottom:20px;text-align:center}
+.hero-title{font-size:26px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.5px;margin-bottom:6px}
+.hero-sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:18px}
+.search-wrap{display:flex;align-items:center;gap:8px;background:#F7F8FA;border:1px solid #E2E5EA;border-radius:10px;padding:10px 14px;max-width:480px;margin:0 auto}
+.search-wrap input{border:none;outline:none;background:transparent;font-size:14px;color:var(--color-text-primary);flex:1;font-family:var(--font-sans)}
+.search-wrap input::placeholder{color:#B0B5BF}
+.search-wrap i{font-size:17px;color:#B0B5BF}
+.stats-row{display:flex;gap:10px;margin-bottom:20px}
+.stat-card{flex:1;background:#fff;border-radius:12px;border:0.5px solid var(--color-border-tertiary);padding:14px 16px}
+.stat-num{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.stat-label{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.stat-icon{font-size:18px;margin-bottom:6px}
+.cats-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.cat{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:0.5px solid var(--color-border-tertiary);background:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.cat.active{border-width:1.5px}
+.cat-writing{color:#085041;border-color:#5DCAA5}.cat-writing.active{background:#E1F5EE;border-color:#1D9E75}
+.cat-image{color:#3C3489;border-color:#AFA9EC}.cat-image.active{background:#EEEDFE;border-color:#534AB7}
+.cat-video{color:#712B13;border-color:#F0997B}.cat-video.active{background:#FAECE7;border-color:#993C1D}
+.cat-code{color:#0C447C;border-color:#85B7EB}.cat-code.active{background:#E6F1FB;border-color:#185FA5}
+.cat-productivity{color:#633806;border-color:#EF9F27}.cat-productivity.active{background:#FAEEDA;border-color:#854F0B}
+.cat-search{color:#27500A;border-color:#97C459}.cat-search.active{background:#EAF3DE;border-color:#3B6D11}
+.cat-all{color:var(--color-text-secondary);border-color:var(--color-border-secondary)}.cat-all.active{background:var(--color-text-primary);color:#fff;border-color:var(--color-text-primary)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.section-count{font-size:12px;color:var(--color-text-tertiary)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.card{background:#fff;border-radius:12px;border:0.5px solid var(--color-border-tertiary);padding:14px;cursor:pointer;text-decoration:none;display:block;transition:border-color .15s}
+.card:hover{border-color:var(--color-border-primary)}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.icon-box{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.icon-writing{background:#E1F5EE;color:#085041}
+.icon-image{background:#EEEDFE;color:#3C3489}
+.icon-video{background:#FAECE7;color:#712B13}
+.icon-code{background:#E6F1FB;color:#0C447C}
+.icon-productivity{background:#FAEEDA;color:#633806}
+.icon-search{background:#EAF3DE;color:#27500A}
+.badge{font-size:10px;padding:3px 7px;border-radius:5px;font-weight:500}
+.b-new{background:#E6F1FB;color:#0C447C}
+.b-free{background:#EAF3DE;color:#27500A}
+.b-hot{background:#FAECE7;color:#712B13}
+.card-name{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.card-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.45;margin-bottom:8px}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.card-comments{font-size:11px;color:var(--color-text-tertiary);display:flex;align-items:center;gap:3px}
+.card-visit{font-size:11px;color:#185FA5;display:flex;align-items:center;gap:3px}
+.no-res{text-align:center;padding:48px;color:var(--color-text-secondary);font-size:14px}
+
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:100;align-items:flex-start;justify-content:center;padding-top:40px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;overflow:hidden;margin-bottom:40px}
+.modal-hero{padding:24px 24px 20px}
+.modal-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px}
+.modal-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.modal-name{font-size:20px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.modal-cat{font-size:12px;color:var(--color-text-secondary)}
+.modal-desc{font-size:14px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:18px}
+.modal-actions{display:flex;gap:10px}
+.btn-visit{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;background:#378ADD;color:#fff;font-size:13px;font-weight:500;text-decoration:none;border:none;cursor:pointer}
+.btn-close-top{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:20px;padding:4px}
+.modal-divider{height:0.5px;background:var(--color-border-tertiary)}
+.modal-comments{padding:20px 24px}
+.comments-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:16px;display:flex;align-items:center;gap:6px}
+.comment-form{background:#F7F8FA;border-radius:12px;padding:14px;margin-bottom:18px}
+.form-row{display:flex;gap:8px;margin-bottom:10px}
+.form-row input{flex:1;border:0.5px solid var(--color-border-secondary);border-radius:8px;padding:8px 10px;font-size:13px;background:#fff;color:var(--color-text-primary);font-family:var(--font-sans);outline:none}
+.form-row input::placeholder{color:var(--color-text-tertiary)}
+.comment-textarea{width:100%;border:0.5px solid var(--color-border-secondary);border-radius:8px;padding:10px;font-size:13px;background:#fff;color:var(--color-text-primary);font-family:var(--font-sans);resize:none;outline:none;line-height:1.5;margin-bottom:10px}
+.comment-textarea::placeholder{color:var(--color-text-tertiary)}
+.form-bottom{display:flex;align-items:center;justify-content:space-between}
+.anon-note{font-size:11px;color:var(--color-text-tertiary);display:flex;align-items:center;gap:4px}
+.btn-submit{padding:7px 16px;border-radius:8px;background:#378ADD;color:#fff;font-size:13px;border:none;cursor:pointer;font-weight:500}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed}
+.comments-list{display:flex;flex-direction:column;gap:12px}
+.comment-item{background:#F7F8FA;border-radius:10px;padding:12px 14px}
+.comment-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.comment-avatar{width:26px;height:26px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+.comment-author{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+.comment-time{font-size:11px;color:var(--color-text-tertiary);margin-left:auto}
+.comment-body{font-size:13px;color:var(--color-text-secondary);line-height:1.55}
+.comments-empty{text-align:center;padding:24px;color:var(--color-text-tertiary);font-size:13px}
+.supabase-note{background:#FAEEDA;border-radius:8px;padding:10px 12px;font-size:11px;color:#633806;margin-bottom:14px;display:flex;align-items:flex-start;gap:6px;line-height:1.5}
+.loading-dots{display:inline-flex;gap:3px}
+.loading-dots span{width:5px;height:5px;border-radius:50%;background:#B0B5BF;animation:dot .8s infinite}
+.loading-dots span:nth-child(2){animation-delay:.15s}
+.loading-dots span:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,80%,100%{opacity:.2}40%{opacity:1}}
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden">AI工具导航，点击卡片查看详情与评论</h2>
+
+<div class="page">
+  <div class="topbar">
+    <div class="logo"><div class="logo-dot"></div>AI工具库</div>
+    <div class="topbar-right">
+      <button class="tb-btn"><i class="ti ti-bookmark" style="font-size:13px;vertical-align:-1px" aria-hidden="true"></i> 收藏</button>
+      <button class="tb-btn"><i class="ti ti-adjustments-horizontal" style="font-size:13px;vertical-align:-1px" aria-hidden="true"></i> 筛选</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-title">找到你的 AI 利器</div>
+    <div class="hero-sub">精选 300 个工具，6 大类别，一搜即达</div>
+    <div class="search-wrap">
+      <i class="ti ti-search" aria-hidden="true"></i>
+      <input type="text" id="sq" placeholder="搜索工具名称、功能…" />
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon" style="color:#378ADD"><i class="ti ti-apps" aria-hidden="true"></i></div>
+      <div class="stat-num" id="dispCount">300</div>
+      <div class="stat-label">工具总数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="color:#3B6D11"><i class="ti ti-coin" aria-hidden="true"></i></div>
+      <div class="stat-num">89</div>
+      <div class="stat-label">免费可用</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="color:#D85A30"><i class="ti ti-flame" aria-hidden="true"></i></div>
+      <div class="stat-num">12</div>
+      <div class="stat-label">本周新增</div>
+    </div>
+  </div>
+
+  <div class="cats-row" id="catsRow"></div>
+
+  <div class="section-header">
+    <span class="section-title" id="sectionTitle">全部工具</span>
+    <span class="section-count" id="sectionCount">共 300 个</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="no-res" id="noRes" style="display:none">没有找到匹配的工具 &nbsp;<i class="ti ti-mood-empty" aria-hidden="true"></i></div>
+</div>
+
+<div class="overlay" id="overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hero">
+      <div class="modal-top">
+        <div class="modal-icon" id="mIcon"></div>
+        <div>
+          <div class="modal-name" id="mName"></div>
+          <div class="modal-cat" id="mCat"></div>
+        </div>
+        <button class="btn-close-top" onclick="closeModal()" aria-label="关闭"><i class="ti ti-x" aria-hidden="true"></i></button>
+      </div>
+      <div class="modal-desc" id="mDesc"></div>
+      <div class="modal-actions">
+        <a class="btn-visit" id="mLink" href="#" target="_blank" rel="noopener">
+          <i class="ti ti-external-link" style="font-size:14px" aria-hidden="true"></i> 直达官网
+        </a>
+        <span id="mBadge"></span>
+      </div>
+    </div>
+    <div class="modal-divider"></div>
+    <div class="modal-comments">
+      <div class="comments-title">
+        <i class="ti ti-message-circle" style="font-size:16px" aria-hidden="true"></i>
+        用户评论 <span id="commentCount" style="font-size:12px;color:var(--color-text-tertiary);font-weight:400"></span>
+      </div>
+
+      <div class="supabase-note">
+        <i class="ti ti-info-circle" style="font-size:14px;flex-shrink:0;margin-top:1px" aria-hidden="true"></i>
+        <span>当前为演示模式（本地存储）。将下方 <code style="font-size:10px;background:rgba(0,0,0,.08);padding:1px 4px;border-radius:3px">SUPABASE_URL</code> 和 <code style="font-size:10px;background:rgba(0,0,0,.08);padding:1px 4px;border-radius:3px">SUPABASE_KEY</code> 替换为你的真实值即可接入数据库。</span>
+      </div>
+
+      <div class="comment-form">
+        <div class="form-row">
+          <input type="text" id="nickInput" placeholder="昵称（可留空，默认匿名）" maxlength="20" />
+        </div>
+        <textarea class="comment-textarea" id="bodyInput" rows="3" placeholder="分享你对这个工具的使用体验…" maxlength="300"></textarea>
+        <div class="form-bottom">
+          <span class="anon-note"><i class="ti ti-shield" style="font-size:13px" aria-hidden="true"></i> 匿名可评，无需登录</span>
+          <button class="btn-submit" id="submitBtn" onclick="submitComment()">发布评论</button>
+        </div>
+      </div>
+
+      <div class="comments-list" id="commentsList"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://yrxfoqjpmlngwjgwijva.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_X0YGK3on1Krg6Ys_CkuQVA_muNQhdVA';
+const USE_SUPABASE = true;
+
+const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
+// 使用真实 Supabase 时隐藏演示提示（不改原结构，只在运行时隐藏）
+if (USE_SUPABASE) {
+  const noteEl = document.querySelector('.supabase-note');
+  if (noteEl) noteEl.style.display = 'none';
+}
+
+const CATS=[
+  {id:'all',label:'全部',icon:'ti-apps',cls:'cat-all'},
+  {id:'writing',label:'写作',icon:'ti-pencil',cls:'cat-writing'},
+  {id:'image',label:'图像',icon:'ti-photo',cls:'cat-image'},
+  {id:'video',label:'视频 & 音频',icon:'ti-video',cls:'cat-video'},
+  {id:'code',label:'编程',icon:'ti-code',cls:'cat-code'},
+  {id:'productivity',label:'效率',icon:'ti-bolt',cls:'cat-productivity'},
+  {id:'search',label:'搜索',icon:'ti-world-search',cls:'cat-search'},
+];
+const ICON={writing:'ti-pencil',image:'ti-photo',video:'ti-video',code:'ti-code',productivity:'ti-bolt',search:'ti-world-search'};
+const CAT_LABEL={writing:'写作',image:'图像',video:'视频 & 音频',code:'编程',productivity:'效率',search:'搜索'};
+const ICON_COLOR={writing:['#E1F5EE','#085041'],image:['#EEEDFE','#3C3489'],video:['#FAECE7','#712B13'],code:['#E6F1FB','#0C447C'],productivity:['#FAEEDA','#633806'],search:['#EAF3DE','#27500A']};
+
+const TOOLS=[
+  {n:'ChatGPT',c:'writing',d:'OpenAI旗下最强对话写作助手，支持多场景文案生成、内容润色与创意写作。',u:'https://chat.openai.com',b:'hot'},
+  {n:'Claude',c:'writing',d:'Anthropic出品的智能写作助手，擅长长文创作、文档分析与专业写作。',u:'https://claude.ai',b:'hot'},
+  {n:'Gemini',c:'writing',d:'Google最新AI写作工具，深度集成Google生态，支持多模态内容生成。',u:'https://gemini.google.com',b:'new'},
+  {n:'Jasper',c:'writing',d:'专为营销团队打造的AI文案生成器，内置60+写作模板。',u:'https://jasper.ai'},
+  {n:'Copy.ai',c:'writing',d:'一键生成营销文案、产品描述、社交帖子，免费套餐可用。',u:'https://copy.ai',b:'free'},
+  {n:'Writesonic',c:'writing',d:'SEO优化博客文章批量生成，支持中文与多语言输出。',u:'https://writesonic.com'},
+  {n:'Rytr',c:'writing',d:'多语言内容写作助手，价格亲民，支持40+写作场景。',u:'https://rytr.me',b:'free'},
+  {n:'Notion AI',c:'writing',d:'深度集成在Notion文档中的写作AI，随时唤起辅助写作与摘要。',u:'https://notion.so'},
+  {n:'QuillBot',c:'writing',d:'英文文章改写与润色工具，学术写作必备，免费版功能丰富。',u:'https://quillbot.com',b:'free'},
+  {n:'Grammarly',c:'writing',d:'英文语法纠错与写作优化，浏览器插件覆盖全场景。',u:'https://grammarly.com'},
+  {n:'Wordtune',c:'writing',d:'英文句子智能改写优化，让表达更地道自然。',u:'https://wordtune.com'},
+  {n:'Sudowrite',c:'writing',d:'专为小说作家设计的AI写作辅助工具，激发创作灵感。',u:'https://sudowrite.com'},
+  {n:'NovelAI',c:'writing',d:'AI小说与故事生成平台，支持多种文学风格创作。',u:'https://novelai.net'},
+  {n:'DeepL Write',c:'writing',d:'多语言写作优化工具，尤其擅长欧洲语言的润色改写。',u:'https://deepl.com/write'},
+  {n:'Hemingway',c:'writing',d:'文章可读性分析工具，帮助你写出简洁有力的英文内容，免费使用。',u:'https://hemingwayapp.com',b:'free'},
+  {n:'Hyperwrite',c:'writing',d:'实时写作自动补全助手，边写边提供智能续写建议。',u:'https://hyperwrite.ai'},
+  {n:'Anyword',c:'writing',d:'营销文案AI生成器，内置效果预测评分，提升转化率。',u:'https://anyword.com'},
+  {n:'INK',c:'writing',d:'SEO文章优化写作工具，实时提供关键词优化建议。',u:'https://inkforall.com'},
+  {n:'Frase',c:'writing',d:'SEO内容研究与生成一体化，适合内容营销团队。',u:'https://frase.io'},
+  {n:'Taplio',c:'writing',d:'LinkedIn内容策划与发布AI助手，提升职场影响力。',u:'https://taplio.com'},
+  {n:'Tweet Hunter',c:'writing',d:'Twitter/X推文灵感与生成工具，助力社交媒体增长。',u:'https://tweethunter.io'},
+  {n:'Postwise',c:'writing',d:'AI驱动的推特内容增长工具，自动生成高互动帖子。',u:'https://postwise.ai'},
+  {n:'Character.ai',c:'writing',d:'创建AI角色进行沉浸式对话，适合角色扮演与故事创作。',u:'https://character.ai',b:'free'},
+  {n:'AI Dungeon',c:'writing',d:'AI驱动的互动文字冒险游戏，故事完全由你掌控。',u:'https://aidungeon.com',b:'free'},
+  {n:'Closers Copy',c:'writing',d:'销售文案专用AI框架，内置说服力写作方法论。',u:'https://closerscopy.com'},
+  {n:'Simplified',c:'writing',d:'设计与文案创作一体化平台，适合内容团队协作。',u:'https://simplified.com'},
+  {n:'Describely',c:'writing',d:'电商产品描述批量AI生成，提升商品页面转化率。',u:'https://describely.ai'},
+  {n:'Hypotenuse AI',c:'writing',d:'电商内容批量生成平台，支持从标题到详情页全流程。',u:'https://hypotenuse.ai'},
+  {n:'Smartwriter',c:'writing',d:'个性化冷邮件AI生成工具，提升邮件开信率。',u:'https://smartwriter.ai'},
+  {n:'LanguageTool',c:'writing',d:'多语言语法检查工具，支持20+语言，免费可用。',u:'https://languagetool.org',b:'free'},
+  {n:'Neuroflash',c:'writing',d:'专注德语与英语的AI营销写作工具。',u:'https://neuroflash.com'},
+  {n:'TextBlaze',c:'writing',d:'文本片段快速插入工具，告别重复输入，免费版够用。',u:'https://blaze.today',b:'free'},
+  {n:'Verse',c:'writing',d:'AI诗歌创作辅助工具，激发文学创意。',u:'https://verse.io'},
+  {n:'Longshot AI',c:'writing',d:'长篇文章研究与生成一体化，内容可靠性更高。',u:'https://longshot.ai'},
+  {n:'Moonbeam',c:'writing',d:'专为长文写作设计的AI助手，帮你突破写作瓶颈。',u:'https://moonbeam.ai'},
+  {n:'GrowthBar',c:'writing',d:'SEO文章快速生成工具，内置关键词研究功能。',u:'https://growthbarseo.com'},
+  {n:'Cohesive',c:'writing',d:'多场景内容创作平台，模板丰富、易上手。',u:'https://cohesive.so'},
+  {n:'Scalenut',c:'writing',d:'长篇SEO文章生成与优化，适合内容营销规模化。',u:'https://scalenut.com'},
+  {n:'Copysmith',c:'writing',d:'企业级营销文案AI平台，支持团队协作与批量生产。',u:'https://copysmith.ai'},
+  {n:'ArticleForge',c:'writing',d:'全自动文章批量生成，适合内容农场与SEO站点。',u:'https://articleforge.com'},
+  {n:'Kafkai',c:'writing',d:'利基市场专属文章生成器，深度行业内容覆盖。',u:'https://kafkai.com'},
+  {n:'Predis.ai',c:'writing',d:'社交媒体文案与配图一体AI生成，支持多平台。',u:'https://predis.ai'},
+  {n:'Narrato',c:'writing',d:'内容创作工作流管理平台，AI写作+团队协作。',u:'https://narrato.io'},
+  {n:'ContentBot',c:'writing',d:'自动化内容创作与发布平台，一站式内容生产。',u:'https://contentbot.ai'},
+  {n:'Lex',c:'writing',d:'简洁优雅的写作文档AI助手，专注于深度创作。',u:'https://lex.page'},
+  {n:'Storya',c:'writing',d:'儿童故事AI生成工具，配合插图创作有趣故事。',u:'https://storya.app'},
+  {n:'Outranking',c:'writing',d:'基于竞品分析的AI写作工具，帮助内容超越竞争对手。',u:'https://outranking.io'},
+  {n:'Shortly',c:'writing',d:'长篇内容快速续写AI，解决写作卡壳问题。',u:'https://shortlyai.com'},
+  {n:'Botowski',c:'writing',d:'多语种AI写作工具，支持多种内容格式生成。',u:'https://botowski.com'},
+  {n:'Compose AI',c:'writing',d:'Gmail智能补全Chrome插件，邮件写作效率翻倍，免费使用。',u:'https://compose.ai',b:'free'},
+
+  {n:'Midjourney',c:'image',d:'目前公认最强的AI图像生成工具，画质精美，风格多样。',u:'https://midjourney.com',b:'hot'},
+  {n:'DALL-E 3',c:'image',d:'OpenAI旗下图像生成模型，与ChatGPT深度集成，理解提示词能力强。',u:'https://openai.com/dall-e-3',b:'hot'},
+  {n:'Stable Diffusion',c:'image',d:'开源AI图像生成模型，可本地部署，自由度最高。',u:'https://stability.ai',b:'free'},
+  {n:'Adobe Firefly',c:'image',d:'Adobe出品的AI创意工具，商业授权安全，与PS深度集成。',u:'https://firefly.adobe.com'},
+  {n:'Canva AI',c:'image',d:'设计与AI图像生成一体化平台，新手友好，模板丰富。',u:'https://canva.com'},
+  {n:'Ideogram',c:'image',d:'擅长在图像中生成清晰文字的AI，海报设计利器，免费可用。',u:'https://ideogram.ai',b:'free'},
+  {n:'Leonardo AI',c:'image',d:'专为游戏美术与概念设计打造的AI图像生成平台。',u:'https://leonardo.ai',b:'free'},
+  {n:'Playground AI',c:'image',d:'支持多模型切换的在线图像生成平台，免费额度充足。',u:'https://playgroundai.com',b:'free'},
+  {n:'NightCafe',c:'image',d:'多种艺术风格AI图像生成，社区活跃，免费每日额度。',u:'https://creator.nightcafe.studio',b:'free'},
+  {n:'Clipdrop',c:'image',d:'Stability AI出品的图像编辑AI工具集，功能强大。',u:'https://clipdrop.co'},
+  {n:'Remove.bg',c:'image',d:'一键精准抠图去除背景，免费版支持低分辨率导出。',u:'https://remove.bg',b:'free'},
+  {n:'Upscayl',c:'image',d:'开源AI图像无损放大工具，可本地运行，完全免费。',u:'https://upscayl.org',b:'free'},
+  {n:'Krea AI',c:'image',d:'实时AI图像生成与增强，边绘边看效果，创意无限。',u:'https://krea.ai',b:'new'},
+  {n:'Flair AI',c:'image',d:'产品图AI生成工具，专为电商品牌设计，一键生成精美场景。',u:'https://flair.ai'},
+  {n:'PhotoRoom',c:'image',d:'商品图背景替换与场景合成，电商卖家必备工具。',u:'https://photoroom.com'},
+  {n:'Magic Eraser',c:'image',d:'智能消除图片中不需要的元素，操作简单免费使用。',u:'https://magiceraser.io',b:'free'},
+  {n:'Cleanup Pictures',c:'image',d:'AI图像污点与瑕疵清除工具，让照片更干净。',u:'https://cleanup.pictures',b:'free'},
+  {n:'Lensa AI',c:'image',d:'AI人像美化与艺术化处理应用，魔法头像风靡社交媒体。',u:'https://prisma-ai.com/lensa'},
+  {n:'Remini',c:'image',d:'老照片AI修复与画质提升，让模糊照片重焕清晰。',u:'https://remini.ai'},
+  {n:'Lexica',c:'image',d:'Stable Diffusion提示词搜索与图像库，找灵感必备。',u:'https://lexica.art',b:'free'},
+  {n:'Civitai',c:'image',d:'SD模型与LoRA社区平台，海量模型免费下载。',u:'https://civitai.com',b:'free'},
+  {n:'Tensor Art',c:'image',d:'在线SD图像生成平台，无需本地配置，免费额度充足。',u:'https://tensor.art',b:'free'},
+  {n:'Craiyon',c:'image',d:'完全免费的AI图像生成工具，适合快速出图测试。',u:'https://craiyon.com',b:'free'},
+  {n:'Bing Image Creator',c:'image',d:'微软出品的AI图像生成，基于DALL-E，免费使用。',u:'https://bing.com/create',b:'free'},
+  {n:'Stockimg.ai',c:'image',d:'商业素材AI生成平台，涵盖Logo、海报、社交图等多类型。',u:'https://stockimg.ai'},
+  {n:'Vectorizer AI',c:'image',d:'将位图照片智能转换为矢量图，适合设计师使用。',u:'https://vectorizer.ai'},
+  {n:'Illustroke',c:'image',d:'文字描述直接生成SVG矢量插画，独特实用。',u:'https://illustroke.com'},
+  {n:'Imagecolorizer',c:'image',d:'AI黑白老照片自动上色工具，免费在线使用。',u:'https://imagecolorizer.com',b:'free'},
+  {n:'Evoto AI',c:'image',d:'专业人像精修AI工具，摄影师后期效率神器。',u:'https://evoto.ai'},
+  {n:'Topaz Photo AI',c:'image',d:'专业级图片增强与噪点消除工具，摄影师首选。',u:'https://topazlabs.com/photo-ai'},
+  {n:"Let's Enhance",c:'image',d:'AI图像超分辨率放大，无损提升图片画质。',u:'https://letsenhance.io'},
+  {n:'Luminar AI',c:'image',d:'智能摄影后期修图AI工具，一键美化照片。',u:'https://skylum.com/luminar'},
+  {n:'Artbreeder',c:'image',d:'通过混合不同图像生成独特人像，免费探索AI创作。',u:'https://artbreeder.com',b:'free'},
+  {n:'DreamStudio',c:'image',d:'Stability AI官方图像生成平台，参数自由可调。',u:'https://dreamstudio.ai'},
+  {n:'Scenario',c:'image',d:'游戏美术素材AI生成，支持自定义风格训练。',u:'https://scenario.com'},
+  {n:'Fotor AI',c:'image',d:'在线AI图像编辑与生成，功能全面适合非设计师。',u:'https://fotor.com'},
+  {n:'Deep Dream',c:'image',d:'Google出品艺术化图像转换工具，梦境般视觉效果，免费使用。',u:'https://deepdreamgenerator.com',b:'free'},
+  {n:'Picsart AI',c:'image',d:'社交图像AI编辑平台，滤镜与创意工具丰富。',u:'https://picsart.com'},
+  {n:'Picwish',c:'image',d:'图片背景消除与AI修图工具，免费版即可日常使用。',u:'https://picwish.com',b:'free'},
+  {n:'Booth AI',c:'image',d:'电商产品专业展示图AI生成，省去实景拍摄成本。',u:'https://booth.ai'},
+  {n:'BlueWillow',c:'image',d:'免费AI图像生成工具，基于Discord社区使用。',u:'https://bluewillow.ai',b:'free'},
+  {n:'Stablecog',c:'image',d:'开源在线AI图像生成平台，支持多种模型，免费可用。',u:'https://stablecog.com',b:'free'},
+  {n:'Portrait AI',c:'image',d:'将普通照片转换为古典油画肖像风格，免费尝试。',u:'https://portraitai.app',b:'free'},
+  {n:'PicSo',c:'image',d:'二次元与动漫风格AI图像生成，ACG爱好者必备。',u:'https://picso.ai'},
+  {n:'Pincel AI',c:'image',d:'图像风格转换与智能修改工具，创意改图利器。',u:'https://pincel.app'},
+  {n:'Img2Go',c:'image',d:'图像格式批量转换与压缩工具，完全免费在线使用。',u:'https://img2go.com',b:'free'},
+  {n:'BgEraser',c:'image',d:'智能图片背景消除工具，免费快速处理。',u:'https://bgeraser.com',b:'free'},
+  {n:'Adobe Express',c:'image',d:'Adobe出品的快速设计AI工具，模板精美，新手友好。',u:'https://express.adobe.com'},
+  {n:"Fy! Studio",c:'image',d:'将你的创意转化为定制艺术品，可打印出售。',u:'https://studio.fy.art'},
+  {n:'FaceApp',c:'image',d:'人脸变换与年龄模拟AI应用，社交媒体爆款工具。',u:'https://faceapp.com'},
+
+  {n:'Sora',c:'video',d:'OpenAI发布的文字生成视频模型，可生成长达一分钟的高质量视频。',u:'https://sora.com',b:'new'},
+  {n:'Runway ML',c:'video',d:'专业级AI视频生成与编辑平台，影视创作者首选工具。',u:'https://runwayml.com',b:'hot'},
+  {n:'Pika Labs',c:'video',d:'通过文字或图片生成流畅视频，创意短视频制作利器。',u:'https://pika.art',b:'new'},
+  {n:'Kling AI',c:'video',d:'快手出品的AI视频生成工具，支持中文提示词，效果出色。',u:'https://klingai.com',b:'new'},
+  {n:'Luma Dream Machine',c:'video',d:'Luma AI出品的高质量AI视频生成工具，物理运动逼真。',u:'https://lumalabs.ai/dream-machine',b:'new'},
+  {n:'HeyGen',c:'video',d:'AI数字人视频制作平台，口播内容一键生成，支持多语言。',u:'https://heygen.com',b:'hot'},
+  {n:'Synthesia',c:'video',d:'企业级AI讲解视频制作，数字人主播+多语言配音。',u:'https://synthesia.io'},
+  {n:'ElevenLabs',c:'video',d:'高拟真AI语音克隆与合成，业界音质最佳的配音工具。',u:'https://elevenlabs.io',b:'hot'},
+  {n:'Suno AI',c:'video',d:'AI音乐生成工具，输入歌词或风格描述即可生成完整歌曲。',u:'https://suno.ai',b:'hot'},
+  {n:'Udio',c:'video',d:'高质量AI音乐作曲工具，生成效果媲美专业制作。',u:'https://udio.com',b:'new'},
+  {n:'Descript',c:'video',d:'AI视频文字编辑工具，删除转录文字即可剪掉对应视频片段。',u:'https://descript.com'},
+  {n:'Opus Clip',c:'video',d:'自动将长视频剪辑为适合社交媒体的精彩短片。',u:'https://opus.pro'},
+  {n:'Pictory',c:'video',d:'文章或脚本自动转换为配音视频，内容营销利器。',u:'https://pictory.ai'},
+  {n:'InVideo AI',c:'video',d:'AI视频脚本与成片自动生成，适合快速内容创作。',u:'https://invideo.io'},
+  {n:'Lumen5',c:'video',d:'博客文章一键转为视频，轻松实现内容多渠道分发。',u:'https://lumen5.com'},
+  {n:'Fliki',c:'video',d:'文字转语音视频工具，多种AI声音可选。',u:'https://fliki.ai'},
+  {n:'D-ID',c:'video',d:'将静态照片生成为会说话的视频，数字人制作简单快捷。',u:'https://d-id.com'},
+  {n:'Murf AI',c:'video',d:'AI配音与语音生成工具，120+声音支持多语言配音。',u:'https://murf.ai'},
+  {n:'Captions',c:'video',d:'自动为视频添加精准字幕，支持多语言翻译。',u:'https://captions.ai'},
+  {n:'Submagic',c:'video',d:'AI字幕生成与关键词高亮，短视频涨粉利器。',u:'https://submagic.co'},
+  {n:'Kapwing',c:'video',d:'在线视频编辑AI平台，字幕、剪辑、翻译一站搞定。',u:'https://kapwing.com'},
+  {n:'Veed.io',c:'video',d:'视频字幕自动生成与AI翻译，多语言内容出海必备。',u:'https://veed.io'},
+  {n:'Podcastle',c:'video',d:'AI播客录制与编辑平台，轻松制作专业级播客内容。',u:'https://podcastle.ai'},
+  {n:'Resemble AI',c:'video',d:'语音克隆与定制配音工具，为品牌打造专属声音。',u:'https://resemble.ai'},
+  {n:'Play.ht',c:'video',d:'博客文章转播客音频，让读者随时随地收听你的内容。',u:'https://play.ht'},
+  {n:'Lovo AI',c:'video',d:'影视级AI配音工具，声音质量逼真，支持情感控制。',u:'https://lovo.ai'},
+  {n:'Soundraw',c:'video',d:'无版权AI音乐生成，视频创作者的背景音乐解决方案。',u:'https://soundraw.io'},
+  {n:'Boomy',c:'video',d:'一键AI作曲并发布到流媒体平台，免费版可用。',u:'https://boomy.com',b:'free'},
+  {n:'Aiva',c:'video',d:'AI古典与影视音乐创作工具，多种风格与乐器可选，免费版可用。',u:'https://aiva.ai',b:'free'},
+  {n:'Beatoven',c:'video',d:'根据视频情绪自动生成匹配背景音乐的AI工具。',u:'https://beatoven.ai'},
+  {n:'Wisecut',c:'video',d:'自动检测并删除视频中的停顿与静音，节省剪辑时间。',u:'https://wisecut.video'},
+  {n:'Munch',c:'video',d:'AI分析视频内容，自动提取最具传播价值的精彩片段。',u:'https://getmunch.com'},
+  {n:'Vidyo.ai',c:'video',d:'视频智能裁剪与多平台适配，一个视频处处分发。',u:'https://vidyo.ai'},
+  {n:'Gling',c:'video',d:'专为播客视频优化的AI自动剪辑工具。',u:'https://gling.ai'},
+  {n:'Colossyan',c:'video',d:'多语言AI培训视频制作，企业学习内容快速生产。',u:'https://colossyan.com'},
+  {n:'Hour One',c:'video',d:'企业AI形象视频定制，数字员工一键上岗。',u:'https://hourone.ai'},
+  {n:'Typecast',c:'video',d:'AI语音角色定制与视频制作，故事与教育内容创作。',u:'https://typecast.ai'},
+  {n:'DeepBrain AI',c:'video',d:'超写实真人克隆AI视频，企业级数字人解决方案。',u:'https://deepbrain.io'},
+  {n:'Speechify',c:'video',d:'将文字内容转为语音朗读，学习与通勤时随时听。',u:'https://speechify.com'},
+  {n:'Listnr',c:'video',d:'多语言AI语音转换工具，支持900+声音与75+语言。',u:'https://listnr.ai'},
+  {n:'Voicify',c:'video',d:'AI歌声风格转换工具，模仿任意歌手演唱风格。',u:'https://voicify.ai'},
+  {n:'Steve AI',c:'video',d:'动画与真人视频AI生成平台，脚本一键成片。',u:'https://steve.ai'},
+  {n:'Elai.io',c:'video',d:'AI讲师视频快速制作，课程内容生产效率大幅提升。',u:'https://elai.io'},
+  {n:'Loudly',c:'video',d:'AI音乐循环生成工具，为视频项目提供持续音乐素材。',u:'https://loudly.com'},
+  {n:'Krisp',c:'video',d:'AI实时降噪工具，视频会议与录音中消除背景噪声。',u:'https://krisp.ai'},
+  {n:'Movio',c:'video',d:'营销AI讲解视频制作，品牌宣传内容快速出品。',u:'https://movio.la'},
+
+  {n:'GitHub Copilot',c:'code',d:'GitHub与OpenAI联合出品的代码AI自动补全，支持主流IDE。',u:'https://github.com/features/copilot',b:'hot'},
+  {n:'Cursor',c:'code',d:'基于AI的原生代码编辑器，内置Claude与GPT，代码生成效率极高。',u:'https://cursor.sh',b:'hot'},
+  {n:'Claude Code',c:'code',d:'Anthropic出品的代码专用AI助手，擅长代码审查与架构分析。',u:'https://claude.ai/code',b:'new'},
+  {n:'Codeium',c:'code',d:'免费AI代码补全工具，支持70+编程语言与主流IDE。',u:'https://codeium.com',b:'free'},
+  {n:'Tabnine',c:'code',d:'多语言AI代码补全，支持本地模型部署保护代码隐私。',u:'https://tabnine.com'},
+  {n:'Replit AI',c:'code',d:'在线编程平台内置AI助手，零配置即可编写与运行代码。',u:'https://replit.com',b:'free'},
+  {n:'Amazon CodeWhisperer',c:'code',d:'AWS出品的AI代码助手，个人版免费，深度集成AWS服务。',u:'https://aws.amazon.com/codewhisperer',b:'free'},
+  {n:'Devin',c:'code',d:'全球首个AI软件工程师，可独立完成完整开发任务。',u:'https://cognition.ai',b:'new'},
+  {n:'v0.dev',c:'code',d:'Vercel出品的UI组件AI生成工具，描述需求即出React代码。',u:'https://v0.dev',b:'new'},
+  {n:'Bolt.new',c:'code',d:'全栈Web应用AI一键生成，包含前端后端与数据库配置。',u:'https://bolt.new',b:'new'},
+  {n:'Lovable',c:'code',d:'AI驱动的应用快速开发平台，非开发者也能构建完整产品。',u:'https://lovable.dev',b:'new'},
+  {n:'Phind',c:'code',d:'专为程序员设计的AI搜索引擎，技术问题直接给出代码答案。',u:'https://phind.com',b:'free'},
+  {n:'Sourcegraph Cody',c:'code',d:'理解整个代码库的AI助手，跨文件上下文问答与生成。',u:'https://sourcegraph.com/cody'},
+  {n:'Continue',c:'code',d:'开源AI代码助手，可连接本地模型，完全可定制。',u:'https://continue.dev',b:'free'},
+  {n:'Aider',c:'code',d:'终端运行的AI代码助手，与Git深度集成，修改代码自动提交。',u:'https://aider.chat',b:'free'},
+  {n:'Pieces',c:'code',d:'AI驱动的代码片段智能管理工具，让知识积累不再流失。',u:'https://pieces.app'},
+  {n:'Blackbox AI',c:'code',d:'代码搜索与生成工具，支持从视频中提取代码，免费使用。',u:'https://blackbox.ai',b:'free'},
+  {n:'Mintlify',c:'code',d:'自动生成代码注释与API文档，让文档编写不再痛苦。',u:'https://mintlify.com'},
+  {n:'Bloop',c:'code',d:'用自然语言搜索代码库，快速定位代码逻辑与函数。',u:'https://bloop.ai'},
+  {n:'Sweep AI',c:'code',d:'AI自动修复代码Bug并提交PR，让小任务彻底自动化。',u:'https://sweep.dev'},
+  {n:'Snyk Code',c:'code',d:'AI驱动的代码安全漏洞检测，实时扫描与修复建议。',u:'https://snyk.io'},
+  {n:'Regex AI',c:'code',d:'用自然语言描述需求自动生成正则表达式，免费在线使用。',u:'https://regex.ai',b:'free'},
+  {n:'SQLChat',c:'code',d:'用自然语言与数据库对话，直接生成SQL查询语句，免费使用。',u:'https://sqlchat.ai',b:'free'},
+  {n:'Text2SQL',c:'code',d:'自然语言转SQL查询工具，让非技术人员也能查数据库。',u:'https://text2sql.ai',b:'free'},
+  {n:'Julius AI',c:'code',d:'上传数据文件与AI对话分析，自动生成图表与洞察。',u:'https://julius.ai'},
+  {n:'Whimsical AI',c:'code',d:'AI辅助流程图与思维导图生成，想法瞬间可视化。',u:'https://whimsical.com'},
+  {n:'Eraser AI',c:'code',d:'技术文档与架构图AI生成工具，工程师必备。',u:'https://eraser.io'},
+  {n:'Draw.io AI',c:'code',d:'免费开源AI辅助绘图工具，流程图与架构图首选。',u:'https://draw.io',b:'free'},
+  {n:'Readme AI',c:'code',d:'自动生成项目README文档，开源项目展示更专业。',u:'https://github.com/eli64s/readme-ai',b:'free'},
+  {n:'Codium AI',c:'code',d:'AI自动生成单元测试，提升代码覆盖率与质量，免费使用。',u:'https://codium.ai',b:'free'},
+  {n:'SonarQube AI',c:'code',d:'企业级代码质量AI管理平台，持续集成代码健康检查。',u:'https://sonarqube.org'},
+  {n:'Stenography',c:'code',d:'自动为代码生成易读注释，让代码库维护更轻松。',u:'https://stenography.dev'},
+  {n:'ChartGPT',c:'code',d:'用自然语言描述需求自动生成数据图表，数据可视化神器。',u:'https://chartgpt.io'},
+  {n:'Hex Magic',c:'code',d:'数据团队协作分析平台，AI辅助数据探索与报告生成。',u:'https://hex.tech'},
+  {n:'Lucidchart AI',c:'code',d:'AI辅助绘图工具，流程图与架构图团队协作首选。',u:'https://lucidchart.com'},
+  {n:'Vercel AI',c:'code',d:'AI应用快速部署平台，内置AI SDK简化LLM集成。',u:'https://vercel.com/ai',b:'new'},
+  {n:'Mutable AI',c:'code',d:'代码文档自动生成与同步工具，保持文档始终最新。',u:'https://mutable.ai'},
+  {n:'AskCodi',c:'code',d:'多IDE支持的AI代码助手，提供代码生成与解释功能。',u:'https://askcodi.com'},
+  {n:'Safurai',c:'code',d:'AI代码审查与优化工具，提升代码质量，免费版可用。',u:'https://safurai.com',b:'free'},
+  {n:'JetBrains AI',c:'code',d:'JetBrains全系列IDE内置AI助手，深度集成开发工作流。',u:'https://jetbrains.com/ai'},
+  {n:'Gliffy',c:'code',d:'团队协作流程图与架构图绘制工具，Confluence深度集成。',u:'https://gliffy.com'},
+  {n:'Docify AI',c:'code',d:'VS Code插件，一键为函数与类生成标准注释文档。',u:'https://docify.ai'},
+  {n:'Diagramming AI',c:'code',d:'架构图AI一键生成，从描述到图表只需几秒。',u:'https://diagrammingai.com'},
+  {n:'Veracode AI',c:'code',d:'企业级应用安全AI检测平台，全生命周期安全防护。',u:'https://veracode.com'},
+  {n:'WhatTheCommit',c:'code',d:'随机生成搞笑Git提交信息，程序员解压必备，免费使用。',u:'https://whatthecommit.com',b:'free'},
+
+  {n:'Notion AI',c:'productivity',d:'集笔记、文档、数据库于一体的工作平台，AI辅助写作与总结。',u:'https://notion.so',b:'hot'},
+  {n:'Microsoft Copilot',c:'productivity',d:'深度集成Word、Excel、Teams的AI助手，Office用户必备。',u:'https://copilot.microsoft.com',b:'hot'},
+  {n:'Otter.ai',c:'productivity',d:'会议实时AI转录与摘要工具，Zoom/Teams/Google Meet均支持。',u:'https://otter.ai'},
+  {n:'Fireflies',c:'productivity',d:'自动记录与搜索会议内容，让每次讨论都有据可查。',u:'https://fireflies.ai'},
+  {n:'Fathom',c:'productivity',d:'免费的Zoom会议AI摘要工具，专注于重要决策与行动项。',u:'https://fathom.video',b:'free'},
+  {n:'Motion',c:'productivity',d:'AI自动优化日程排布，将任务与会议智能安排到最佳时间段。',u:'https://usemotion.com'},
+  {n:'Reclaim AI',c:'productivity',d:'Google Calendar AI调度助手，保护专注时间与习惯养成。',u:'https://reclaim.ai'},
+  {n:'Zapier AI',c:'productivity',d:'自动化工作流平台，AI辅助构建跨应用自动化流程。',u:'https://zapier.com'},
+  {n:'Make.com',c:'productivity',d:'无代码AI自动化平台，可视化构建复杂工作流。',u:'https://make.com'},
+  {n:'n8n',c:'productivity',d:'开源工作流自动化工具，可自托管，完全免费使用。',u:'https://n8n.io',b:'free'},
+  {n:'Superhuman',c:'productivity',d:'专为高效人士设计的AI邮件客户端，键盘快捷键极速处理邮件。',u:'https://superhuman.com'},
+  {n:'Shortwave',c:'productivity',d:'Gmail AI摘要与回复助手，让邮件处理效率提升数倍。',u:'https://shortwave.com'},
+  {n:'Lavender',c:'productivity',d:'销售邮件AI优化工具，实时评分提升邮件回复率。',u:'https://lavender.ai'},
+  {n:'Taskade AI',c:'productivity',d:'团队任务与项目AI管理平台，结合AI助手实时协作。',u:'https://taskade.com'},
+  {n:'Mem AI',c:'productivity',d:'AI个人知识库管理工具，自动整理笔记与关联信息。',u:'https://mem.ai'},
+  {n:'Obsidian AI',c:'productivity',d:'本地知识图谱笔记工具，插件丰富，数据完全掌控，免费使用。',u:'https://obsidian.md',b:'free'},
+  {n:'Logseq',c:'productivity',d:'开源双链笔记与知识图谱工具，注重隐私保护，免费使用。',u:'https://logseq.com',b:'free'},
+  {n:'Clockwise',c:'productivity',d:'会议时间AI优化工具，自动整合团队日程找到最佳会议时间。',u:'https://getclockwise.com'},
+  {n:'Notta',c:'productivity',d:'多语言AI转录工具，支持实时转录与会议摘要导出。',u:'https://notta.ai'},
+  {n:'Bardeen',c:'productivity',d:'浏览器AI自动化工具，无代码抓取网页数据与自动操作，免费使用。',u:'https://bardeen.ai',b:'free'},
+  {n:'Magical',c:'productivity',d:'浏览器Tab数据AI自动填充工具，告别重复复制粘贴，免费使用。',u:'https://magical.so',b:'free'},
+  {n:'Monica AI',c:'productivity',d:'全能浏览器AI助手，网页摘要、翻译、写作一键完成。',u:'https://monica.im'},
+  {n:'Sider AI',c:'productivity',d:'浏览器侧边栏AI助手，阅读网页时随时问AI获取解析。',u:'https://sider.ai'},
+  {n:'Glasp',c:'productivity',d:'网页高亮与AI摘要工具，轻松积累阅读笔记，免费使用。',u:'https://glasp.co',b:'free'},
+  {n:'Readwise',c:'productivity',d:'阅读内容AI复习工具，让高亮笔记真正进入长期记忆。',u:'https://readwise.io'},
+  {n:'ChatPDF',c:'productivity',d:'与PDF文档直接对话问答，快速获取文件关键信息，免费使用。',u:'https://chatpdf.com',b:'free'},
+  {n:'Humata',c:'productivity',d:'文档AI问答与深度分析工具，适合处理长篇报告与合同。',u:'https://humata.ai'},
+  {n:'Elicit',c:'productivity',d:'学术研究AI助手，自动搜索文献、提取数据、生成摘要。',u:'https://elicit.com'},
+  {n:'Consensus',c:'productivity',d:'基于学术论文的AI搜索引擎，快速找到科学共识。',u:'https://consensus.app'},
+  {n:'SciSpace',c:'productivity',d:'科研文献AI阅读助手，论文难点一键解释。',u:'https://typeset.io'},
+  {n:'Explainpaper',c:'productivity',d:'论文AI解读工具，划线即解释，让学术阅读不再艰难，免费使用。',u:'https://explainpaper.com',b:'free'},
+  {n:'Adobe Acrobat AI',c:'productivity',d:'PDF文档AI智能摘要与问答，处理合同与报告效率倍增。',u:'https://adobe.com/acrobat'},
+  {n:'Nanonets',c:'productivity',d:'表单与文档AI识别提取工具，自动化数据录入流程。',u:'https://nanonets.com'},
+  {n:'Mathpix',c:'productivity',d:'数学公式图片AI转换工具，手写公式秒变LaTeX代码。',u:'https://mathpix.com'},
+  {n:'Wolfram Alpha',c:'productivity',d:'强大的数学计算与知识查询AI引擎，学生与研究者必备，免费使用。',u:'https://wolframalpha.com',b:'free'},
+  {n:'Merlin AI',c:'productivity',d:'免费浏览器AI助手插件，在任何网页唤起AI辅助。',u:'https://merlin.foyer.work',b:'free'},
+  {n:'Liner',c:'productivity',d:'网页高亮与AI笔记工具，将碎片阅读转化为知识积累。',u:'https://getliner.com'},
+  {n:'Relevance AI',c:'productivity',d:'构建AI工作团队的自动化平台，让重复性工作彻底自动化。',u:'https://relevanceai.com'},
+  {n:'Reflect',c:'productivity',d:'AI增强的个人笔记工具，双链结构+AI帮助深度思考。',u:'https://reflect.app'},
+  {n:'Parseur',c:'productivity',d:'邮件与文档AI智能解析工具，自动提取结构化数据。',u:'https://parseur.com'},
+  {n:'Docsumo',c:'productivity',d:'文档数据AI提取平台，适合发票、合同等场景的自动化处理。',u:'https://docsumo.com'},
+  {n:'Reducto',c:'productivity',d:'文档AI结构提取工具，将非结构化文件转为可用数据。',u:'https://reducto.ai'},
+  {n:'AssemblyAI',c:'productivity',d:'语音AI开发平台，提供转录、摘要、情感分析等API接口。',u:'https://assemblyai.com'},
+  {n:'SaneBox',c:'productivity',d:'AI邮件优先级排序工具，自动将不重要邮件归档，还你清净收件箱。',u:'https://sanebox.com'},
+  {n:'Spark Mail AI',c:'productivity',d:'AI邮件回复建议与优先排序，让邮件管理更轻松。',u:'https://sparkmailapp.com'},
+  {n:'Trint',c:'productivity',d:'媒体内容AI转录平台，记者与播客制作人的效率工具。',u:'https://trint.com'},
+
+  {n:'Perplexity AI',c:'search',d:'实时联网AI搜索引擎，每次回答都附带信息来源引用。',u:'https://perplexity.ai',b:'hot'},
+  {n:'You.com',c:'search',d:'AI对话搜索引擎，结合传统搜索结果与AI生成答案，免费使用。',u:'https://you.com',b:'free'},
+  {n:'Bing AI',c:'search',d:'微软AI搜索引擎，基于GPT-4，集成在Edge浏览器中，免费使用。',u:'https://bing.com',b:'free'},
+  {n:'Google AI Overviews',c:'search',d:'Google搜索结果顶部的AI生成摘要，快速获取核心答案。',u:'https://google.com',b:'new'},
+  {n:'Kagi',c:'search',d:'无广告订阅制优质搜索引擎，结果更纯净无商业干扰。',u:'https://kagi.com'},
+  {n:'Brave Search',c:'search',d:'隐私优先的AI搜索引擎，不追踪用户数据，免费使用。',u:'https://search.brave.com',b:'free'},
+  {n:'Exa AI',c:'search',d:'基于语义理解的搜索API，为AI应用提供高质量网络检索能力。',u:'https://exa.ai'},
+  {n:'Tavily',c:'search',d:'专为AI Agent优化的搜索API，快速获取结构化搜索结果。',u:'https://tavily.com'},
+  {n:'Semantic Scholar',c:'search',d:'AI辅助的学术论文搜索引擎，覆盖2亿+论文，免费使用。',u:'https://semanticscholar.org',b:'free'},
+  {n:'Connected Papers',c:'search',d:'以可视化图谱展示论文引用关系，发现相关研究的利器。',u:'https://connectedpapers.com',b:'free'},
+  {n:'ResearchRabbit',c:'search',d:'学术文献发现与追踪AI工具，像Spotify一样推荐相关论文。',u:'https://researchrabbit.ai',b:'free'},
+  {n:'Phind',c:'search',d:'专为程序员设计的AI搜索引擎，技术问题直接给出代码答案。',u:'https://phind.com',b:'free'},
+  {n:'Andi',c:'search',d:'注重隐私的AI对话搜索引擎，简洁直接回答问题，免费使用。',u:'https://andisearch.com',b:'free'},
+  {n:'Globe Explorer',c:'search',d:'主题知识图谱可视化探索工具，发现知识之间的关联。',u:'https://explorer.globe.engineer',b:'free'},
+  {n:'Storm Stanford',c:'search',d:'斯坦福开发的AI自动生成研究报告工具，引用来源清晰。',u:'https://storm.genie.stanford.edu',b:'free'},
+  {n:'Genspark',c:'search',d:'AI生成专题知识页面，搜索结果更深度更系统化。',u:'https://genspark.ai',b:'new'},
+  {n:'Felo',c:'search',d:'多语言AI搜索工具，中文用户友好，跨语言获取全球信息。',u:'https://felo.ai',b:'free'},
+  {n:'Devv AI',c:'search',d:'程序员专属AI搜索，技术文档与代码库深度检索。',u:'https://devv.ai',b:'free'},
+  {n:'Ask AI',c:'search',d:'问答式知识搜索引擎，以对话形式获取准确答案，免费使用。',u:'https://iask.ai',b:'free'},
+  {n:'ChatHub',c:'search',d:'同时调用多个AI模型对比答案，一站看遍ChatGPT/Claude等。',u:'https://chathub.gg',b:'free'},
+  {n:'Harvey AI',c:'search',d:'专为法律行业打造的AI助手，合同审查与法律研究利器。',u:'https://harvey.ai'},
+  {n:'Casetext',c:'search',d:'法律研究AI工具，快速定位判例与法规，律师事务所广泛使用。',u:'https://casetext.com'},
+  {n:'AlphaSense',c:'search',d:'金融文档AI搜索平台，覆盖财报、研报与新闻的深度检索。',u:'https://alpha-sense.com'},
+  {n:'Dimensions AI',c:'search',d:'科研资金与论文AI搜索平台，学术机构免费使用。',u:'https://dimensions.ai',b:'free'},
+  {n:'Litmaps',c:'search',d:'文献地图可视化工具，以时间轴呈现论文引用关系网络。',u:'https://litmaps.com',b:'free'},
+  {n:'Scholarcy',c:'search',d:'论文AI快速摘要工具，核心观点、方法与结论一目了然。',u:'https://scholarcy.com'},
+  {n:'Undermind',c:'search',d:'深度学术AI搜索工具，比关键词搜索更理解研究问题本质。',u:'https://undermind.ai'},
+  {n:'Iris.ai',c:'search',d:'科研文献AI筛选工具，从海量论文中精准找到相关研究。',u:'https://iris.ai'},
+  {n:'DeepResearch',c:'search',d:'OpenAI出品的深度研究AI工具，自动多步搜索生成报告。',u:'https://openai.com',b:'new'},
+  {n:'Elicit',c:'search',d:'研究任务AI助手，提取文献数据、总结证据与生成研究框架。',u:'https://elicit.com'},
+  {n:'Scite.ai',c:'search',d:'论文引用AI分析工具，区分支持、反驳与中立引用关系。',u:'https://scite.ai'},
+  {n:'Lexi',c:'search',d:'法律文件AI智能检索与分析，合规团队效率工具。',u:'https://lexi.com'},
+  {n:'Weaviate',c:'search',d:'开源向量数据库，为AI应用提供语义搜索能力基础设施。',u:'https://weaviate.io',b:'free'},
+  {n:'Pinecone',c:'search',d:'云端向量数据库服务，AI应用构建语义搜索的首选方案。',u:'https://pinecone.io'},
+  {n:'Chroma',c:'search',d:'开源向量数据库，轻量易用，本地AI应用开发首选，免费使用。',u:'https://trychroma.com',b:'free'},
+  {n:'Koyfin',c:'search',d:'金融数据AI分析平台，股票、基金与宏观数据深度可视化。',u:'https://koyfin.com'},
+  {n:'Tegus',c:'search',d:'专家访谈与投资研究AI平台，机构投资者的信息优势来源。',u:'https://tegus.com'},
+  {n:'Westlaw AI',c:'search',d:'汤森路透出品的专业法律AI检索系统，全球律师事务所标配。',u:'https://legal.thomsonreuters.com'},
+  {n:'Metaphor',c:'search',d:'AI神经网络驱动的语义搜索，通过示例链接找相似内容。',u:'https://metaphor.systems'},
+];
+
+const localComments={};
+let curTool=null;
+let curCat='all', q='';
+
+const SAMPLE_COMMENTS={
+  'ChatGPT':[{nick:'产品经理小李',body:'用了两年了，写PRD效率提升明显，就是有时候会一本正经地胡说八道，要注意核实。',time:'2天前'},{nick:'匿名用户',body:'免费版现在限制越来越多了，付费版$20/月还是值的。',time:'5天前'}],
+  'Midjourney':[{nick:'设计师Ava',body:'风格化能力超强，商业插图用它出图再微调，效率翻了好几倍。提示词需要练习。',time:'1天前'}],
+  'GitHub Copilot':[{nick:'后端开发者',body:'写样板代码神器，理解上下文能力很强。但复杂业务逻辑还是要自己想清楚。',time:'3天前'},{nick:'匿名用户',body:'学生可以免费用，非常良心。',time:'1周前'}],
+  'Perplexity AI':[{nick:'研究员张老师',body:'带来源引用这个设计太好了，比直接用ChatGPT搜索靠谱很多。',time:'4天前'}],
+  'Notion AI':[{nick:'内容创作者',body:'在Notion里直接写作然后让AI润色，工作流非常顺畅。就是贵了点。',time:'2天前'}],
+};
+
+function getSampleComments(toolName){
+  return SAMPLE_COMMENTS[toolName]||[];
+}
+
+async function fetchComments(toolId){
+  if(!USE_SUPABASE){
+    const local=localComments[toolId]||[];
+    const sample=getSampleComments(toolId);
+    return [...local,...sample];
+  }
+  try{
+    if (supabaseClient) {
+      const { data, error } = await supabaseClient
+        .from('comments')
+        .select('*')
+        .eq('tool_id', toolId)
+        .order('created_at', { ascending: false });
+      if (error) return [];
+      return data || [];
+    }
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/comments?tool_id=eq.${encodeURIComponent(toolId)}&order=created_at.desc`,{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    return await res.json();
+  }catch(e){return[];}
+}
+
+async function saveComment(toolId,nick,body){
+  if(!USE_SUPABASE){
+    if(!localComments[toolId])localComments[toolId]=[];
+    localComments[toolId].unshift({nick:nick||'匿名用户',body,time:'刚刚'});
+    return true;
+  }
+  try{
+    if (supabaseClient) {
+      const { error } = await supabaseClient
+        .from('comments')
+        .insert([{ tool_id: toolId, nickname: nick || '匿名用户', body, created_at: new Date().toISOString() }]);
+      return !error;
+    }
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/comments`,{
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({tool_id:toolId,nickname:nick||'匿名用户',body,created_at:new Date().toISOString()})
+    });
+    return res.ok;
+  }catch(e){return false;}
+}
+
+function timeFmt(str){
+  if(str&&(str.includes('前')||str==='刚刚'))return str;
+  try{
+    const d=new Date(str),now=new Date(),diff=Math.floor((now-d)/1000);
+    if(diff<60)return '刚刚';
+    if(diff<3600)return Math.floor(diff/60)+'分钟前';
+    if(diff<86400)return Math.floor(diff/3600)+'小时前';
+    return Math.floor(diff/86400)+'天前';
+  }catch(e){return str||'';}
+}
+
+function initials(name){
+  const n=name||'匿名';
+  return n.length<=2?n:n.slice(0,2);
+}
+
+function renderComments(list){
+  const el=document.getElementById('commentsList');
+  document.getElementById('commentCount').textContent='('+list.length+')';
+  if(!list.length){el.innerHTML='<div class="comments-empty"><i class="ti ti-message-off" style="font-size:20px;display:block;margin:0 auto 8px" aria-hidden="true"></i>还没有评论，来说第一个吧</div>';return;}
+  el.innerHTML=list.map(c=>{
+    const nick=c.nick||c.nickname||'匿名用户';
+    const body=c.body||c.content||'';
+    const t=timeFmt(c.time||c.created_at);
+    return `<div class="comment-item">
+      <div class="comment-meta">
+        <div class="comment-avatar">${initials(nick)}</div>
+        <span class="comment-author">${nick}</span>
+        <span class="comment-time">${t}</span>
+      </div>
+      <div class="comment-body">${body}</div>
+    </div>`;
+  }).join('');
+}
+
+async function openModal(tool){
+  curTool=tool;
+  const [bg,fg]=ICON_COLOR[tool.c]||['#F1EFE8','#444441'];
+  document.getElementById('mIcon').style.cssText=`background:${bg};color:${fg}`;
+  document.getElementById('mIcon').innerHTML=`<i class="ti ${ICON[tool.c]}" aria-hidden="true"></i>`;
+  document.getElementById('mName').textContent=tool.n;
+  document.getElementById('mCat').textContent=CAT_LABEL[tool.c]||'';
+  document.getElementById('mDesc').textContent=tool.d;
+  document.getElementById('mLink').href=tool.u;
+  const b=tool.b;
+  document.getElementById('mBadge').innerHTML=b==='hot'?'<span class="badge b-hot" style="font-size:12px;padding:5px 10px">热门</span>':b==='new'?'<span class="badge b-new" style="font-size:12px;padding:5px 10px">新品</span>':b==='free'?'<span class="badge b-free" style="font-size:12px;padding:5px 10px">免费</span>':'';
+  document.getElementById('nickInput').value='';
+  document.getElementById('bodyInput').value='';
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('commentsList').innerHTML='<div class="comments-empty"><div class="loading-dots"><span></span><span></span><span></span></div></div>';
+  document.getElementById('commentCount').textContent='';
+  const comments=await fetchComments(tool.n);
+  renderComments(comments);
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  curTool=null;
+}
+
+function handleOverlayClick(e){if(e.target===document.getElementById('overlay'))closeModal();}
+
+async function submitComment(){
+  if(!curTool)return;
+  const nick=document.getElementById('nickInput').value.trim();
+  const body=document.getElementById('bodyInput').value.trim();
+  if(!body)return;
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='发布中…';
+  const ok=await saveComment(curTool.n,nick,body);
+  if(ok){
+    document.getElementById('bodyInput').value='';
+    document.getElementById('nickInput').value='';
+    const comments=await fetchComments(curTool.n);
+    renderComments(comments);
+  }
+  btn.disabled=false;btn.textContent='发布评论';
+}
+
+const CATS2=[
+  {id:'all',label:'全部',icon:'ti-apps',cls:'cat-all'},
+  {id:'writing',label:'写作',icon:'ti-pencil',cls:'cat-writing'},
+  {id:'image',label:'图像',icon:'ti-photo',cls:'cat-image'},
+  {id:'video',label:'视频 & 音频',icon:'ti-video',cls:'cat-video'},
+  {id:'code',label:'编程',icon:'ti-code',cls:'cat-code'},
+  {id:'productivity',label:'效率',icon:'ti-bolt',cls:'cat-productivity'},
+  {id:'search',label:'搜索',icon:'ti-world-search',cls:'cat-search'},
+];
+
+function renderCats(){
+  document.getElementById('catsRow').innerHTML=CATS2.map(cat=>{
+    const cnt=cat.id==='all'?TOOLS.length:TOOLS.filter(t=>t.c===cat.id).length;
+    const active=curCat===cat.id?' active':'';
+    return `<div class="cat ${cat.cls}${active}" onclick="setCat('${cat.id}')"><i class="ti ${cat.icon}" style="font-size:14px" aria-hidden="true"></i>${cat.label} <span style="opacity:.5;font-size:11px">${cnt}</span></div>`;
+  }).join('');
+}
+
+function renderGrid(){
+  const qv=q.toLowerCase();
+  const list=TOOLS.filter(t=>{
+    const mc=curCat==='all'||t.c===curCat;
+    const mq=!qv||t.n.toLowerCase().includes(qv)||t.d.includes(qv);
+    return mc&&mq;
+  });
+  document.getElementById('dispCount').textContent=list.length;
+  document.getElementById('sectionTitle').textContent=(curCat==='all'?'全部':CAT_LABEL[curCat])+'工具';
+  document.getElementById('sectionCount').textContent='共 '+list.length+' 个';
+  const grid=document.getElementById('grid');
+  const noRes=document.getElementById('noRes');
+  if(!list.length){grid.innerHTML='';noRes.style.display='block';return;}
+  noRes.style.display='none';
+  grid.innerHTML=list.map((t,i)=>{
+    const badge=t.b==='hot'?'<span class="badge b-hot">热门</span>':t.b==='new'?'<span class="badge b-new">新品</span>':t.b==='free'?'<span class="badge b-free">免费</span>':'';
+    const sampleCnt=getSampleComments(t.n).length;
+    const cntStr=sampleCnt?sampleCnt+'条评论':'评论';
+    return `<div class="card" onclick="openModal(TOOLS[${TOOLS.indexOf(t)}])">
+      <div class="card-header">
+        <div class="icon-box icon-${t.c}"><i class="ti ${ICON[t.c]}" aria-hidden="true"></i></div>
+        ${badge}
+      </div>
+      <div class="card-name">${t.n}</div>
+      <div class="card-desc">${t.d.slice(0,38)}…</div>
+      <div class="card-footer">
+        <span class="card-comments"><i class="ti ti-message-circle" style="font-size:12px" aria-hidden="true"></i>${cntStr}</span>
+        <span class="card-visit"><i class="ti ti-external-link" style="font-size:11px" aria-hidden="true"></i>直达</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setCat(id){curCat=id;renderCats();renderGrid();}
+document.getElementById('sq').addEventListener('input',e=>{q=e.target.value;renderGrid();});
+renderCats();renderGrid();
+</script>
+
+<!-- 页面底部留言区（只追加，不影响原有结构/样式） -->
+<div class="page">
+  <div class="hero">
+    <div class="comments-title" style="justify-content:center;margin-bottom:14px">
+      <i class="ti ti-message-circle" style="font-size:16px" aria-hidden="true"></i>
+      页面留言
+      <span id="pageCommentCount" style="font-size:12px;color:var(--color-text-tertiary);font-weight:400"></span>
+    </div>
+
+    <div class="comment-form" style="max-width:560px;margin:0 auto 14px">
+      <div class="form-row">
+        <input type="text" id="pageNickInput" placeholder="昵称（可留空，默认匿名）" maxlength="20" />
+      </div>
+      <textarea class="comment-textarea" id="pageBodyInput" rows="3" placeholder="对网站/工具库有什么建议？欢迎留言…" maxlength="300"></textarea>
+      <div class="form-bottom">
+        <span class="anon-note"><i class="ti ti-shield" style="font-size:13px" aria-hidden="true"></i> 匿名可评，无需登录</span>
+        <button class="btn-submit" id="pageSubmitBtn" onclick="submitPageComment()">发布留言</button>
+      </div>
+    </div>
+
+    <div class="comments-list" id="pageCommentsList" style="max-width:560px;margin:0 auto"></div>
+  </div>
+</div>
+
+<script>
+const PAGE_THREAD_ID = '__page__ai_tools_with_comments';
+
+function renderPageComments(list){
+  const el = document.getElementById('pageCommentsList');
+  document.getElementById('pageCommentCount').textContent = '(' + (list?.length || 0) + ')';
+  if(!list || !list.length){
+    el.innerHTML = '<div class="comments-empty"><i class="ti ti-message-off" style="font-size:20px;display:block;margin:0 auto 8px" aria-hidden="true"></i>还没有留言，来说第一个吧</div>';
+    return;
+  }
+  el.innerHTML = list.map(c=>{
+    const nick=c.nick||c.nickname||'匿名用户';
+    const body=c.body||c.content||'';
+    const t=timeFmt(c.time||c.created_at);
+    return `<div class="comment-item">
+      <div class="comment-meta">
+        <div class="comment-avatar">${initials(nick)}</div>
+        <span class="comment-author">${nick}</span>
+        <span class="comment-time">${t}</span>
+      </div>
+      <div class="comment-body">${body}</div>
+    </div>`;
+  }).join('');
+}
+
+async function fetchPageComments(){
+  const list = await fetchComments(PAGE_THREAD_ID);
+  renderPageComments(list);
+}
+
+async function submitPageComment(){
+  const nick=document.getElementById('pageNickInput').value.trim();
+  const body=document.getElementById('pageBodyInput').value.trim();
+  if(!body)return;
+  const btn=document.getElementById('pageSubmitBtn');
+  btn.disabled=true;btn.textContent='发布中…';
+  const ok=await saveComment(PAGE_THREAD_ID,nick,body);
+  if(ok){
+    document.getElementById('pageBodyInput').value='';
+    document.getElementById('pageNickInput').value='';
+    await fetchPageComments();
+  }
+  btn.disabled=false;btn.textContent='发布留言';
+}
+
+fetchPageComments();
+</script>
